@@ -27,6 +27,7 @@ class Data {
 
   selectStation(stationInfo){
     let {stationId, stationName} = stationInfo
+    this.station = {stationId, stationName}
     var self = this
     this.pandora.request("station.getPlaylist", {
        "stationToken": stationId,

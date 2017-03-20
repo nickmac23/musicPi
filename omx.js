@@ -11,13 +11,12 @@ class omx {
   }
 
   setPlayList(playList){
-    this.playList = playList
-    this.next()
-    return null
+    this.playList.push(playList)
+    return this.next()
   }
 
   playSong(song){
-    var path = song.path ? song.path : song.additionalAudioUrl
+    var path = song.additionalAudioUrl
     if (this.player) {
       if(this.player.running) this.player.quit()
       this.player = null
@@ -26,7 +25,7 @@ class omx {
     this.player = new Omx(path)
     var self = this
     this.player.on('close', () => self.events.emit('songEnd') )
-    return {playing: song}
+    return {nowPlaying: song}
   }
 
   next(){

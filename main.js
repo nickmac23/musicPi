@@ -24,11 +24,15 @@ pandora.login(function(err) {
 });
 
 dataStore.events.on('sendData', data => {
-	if (data) omx[data.command](data.params)
-	socketOut(dataStore.requestData())
+	var info = {};
+	if (data) info = omx[data.command](data.params)
+	socketOut({dataStore.requestData(), info})
 })
 
-omx.events.on('songEnd', () => socketOut(omx.next()))
+omx.events.on('songEnd', () => {
+	if (omx.playing == omx.playList.length - 2) dataStore.selectStation(dataStore.station)
+	socketOut(omx.next())
+})
 
 socket.on('Piraspberry', ({obj, command, params}) => {
 	console.log('obj ' + obj + ' command ' + command + ' params ' + params);
