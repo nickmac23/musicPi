@@ -1,0 +1,28 @@
+{
+  "name": "musicPi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "renderer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nickmac23/musicPi.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nickmac23/musicPi/issues"
+  },
+  "homepage": "https://github.com/nickmac23/musicPi#readme",
+  "dependencies": {
+    "anesidora": "^1.2.1",
+    "dotenv": "^4.0.0",
+    "musicmetadata": "^2.0.5",
+    "node-omxplayer": "^0.4.1",
+    "socket.io": "^1.7.3",
+    "socket.io-client": "^1.7.3"
+  }
+}
