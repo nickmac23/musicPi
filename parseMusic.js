@@ -21,19 +21,18 @@ function parse (musicList) {
       var readableStream = fs.createReadStream(musicList[i]);
       mm(readableStream, function (err, metadata) {
           var musicObj = {
-	          index: i,
-            path: musicList[i],
-            title: metadata.title,
+            additionalAudioUrl: musicList[i],
+            songName: metadata.title,
             genre: metadata.genre,
-            album: metadata.album,
-            artist: metadata.artist,
-            year: metadata.year,
+            albumName: metadata.album,
+            artistName: metadata.artist,
           }
           readableStream.close();
           resolve(musicObj)
       })
     }))
   }
+
   return Promise.all(list)
 }
 

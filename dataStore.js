@@ -17,6 +17,7 @@ class Data {
       self.pandoraStations = stationList.stations
       self.events.emit('sendData')
     });
+    return null
   }
 
   addFiledMusic(filedMusic){
@@ -36,11 +37,11 @@ class Data {
        self.stationPlayList = playlist.items
        self.events.emit('sendData', {command:'setPlayList', params: playlist.items})
    });
-   return {returnData: false}
+   return null
   }
 
   requestData(){
-    return {returnData: {filedMusic: this.filedMusic, pandoraStations: this.pandoraStations, station: this.station, stationPlayList: this.stationPlayList}}
+    return {filedMusic: this.filedMusic, pandoraStations: this.pandoraStations, station: this.station, stationPlayList: this.stationPlayList}
   }
 
 }

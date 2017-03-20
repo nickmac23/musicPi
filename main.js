@@ -8,8 +8,8 @@ var env = require('dotenv').config()
 
 http.listen(8000, () => console.log('listening on port 8000') )
 
-var path = '/home/pi/Desktop/usbstick/'
-// var path = '/Users/nickmac/Desktop/music/'
+// var path = '/home/pi/Desktop/usbstick/'
+var path = '/Users/nickmac/Desktop/music/'
 
 var pandora = new Anesidora(process.env.EMAIL, process.env.PASSWORD);
 
@@ -25,18 +25,19 @@ pandora.login(function(err) {
 
 dataStore.events.on('sendData', data => {
 	if (data) omx[data.command](data.params)
-	socket.emit('server', {to: 'Pi', room: 'raspberry', info: dataStore.requestData()})
+	socketOut(dataStore.requestData())
 })
-omx.events.on('songEnd', () => omx.next() )
+
+omx.events.on('songEnd', () => socketOut(omx.next()))
 
 socket.on('Piraspberry', ({obj, command, params}) => {
 	console.log('obj ' + obj + ' command ' + command + ' params ' + params);
 	var info;
-
 	if (obj == 'dataStore') info = dataStore[command](params)
 	else info = omx[command](params)
-	// if(info.player) info.player.on('close', () => console.log('done') )
-	if (info.returnData) socket.emit('server', {to: 'Pi', room: 'raspberry', info})
-
-
+	if (info) socket.emit('server', {to: 'Pi', room: 'raspberry', info})
 })
+
+function socketOut(info){
+	socket.emit('server', {to: 'Pi', room: 'raspberry', info})
+}
