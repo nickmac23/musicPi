@@ -57,13 +57,13 @@ class omx {
     this.nowPlaying = song
     var path = song.additionalAudioUrl
     if (this.player) {
-      if(this.player.running) this.player.quit()
-      this.player = null
+      this.player.newSource(path)
     }
-
+	else {
     this.player = new Omx(path)
     var self = this
     this.player.on('close', () => self.events.emit('songEnd') )
+	}
     this.onRequestFinished()
   }
 
