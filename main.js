@@ -8,8 +8,8 @@ var env = require('dotenv').config()
 
 http.listen(8000, () => console.log('listening on port 8000') )
 
-// var path = '/home/pi/Desktop/usbstick/'
-var path = '/Users/nickmac/Desktop/music/'
+var path = '/home/pi/Desktop/usbstick/'
+// var path = '/Users/nickmac/Desktop/music/'
 
 var pandora = new Anesidora(process.env.EMAIL, process.env.PASSWORD);
 
@@ -26,7 +26,8 @@ pandora.login(function(err) {
 dataStore.events.on('sendData', data => {
 	var info = {};
 	if (data) info = omx[data.command](data.params)
-	socketOut({dataStore.requestData(), info})
+	if(info) socketOut(info)
+	socketOut(dataStore.requestData())
 })
 
 omx.events.on('songEnd', () => {

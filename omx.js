@@ -11,12 +11,12 @@ class omx {
   }
 
   setPlayList(playList){
-    this.playList.push(playList)
+    this.playList = this.playList.concat(playList)
     return this.next()
   }
 
   playSong(song){
-    var path = song.additionalAudioUrl
+        var path = song.additionalAudioUrl
     if (this.player) {
       if(this.player.running) this.player.quit()
       this.player = null
