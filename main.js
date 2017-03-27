@@ -7,8 +7,7 @@ var env = require('dotenv').config()
 
 http.listen(8000, () => console.log('listening on port 8000') )
 
-// var path = '/home/pi/Desktop/usbstick/'
-var path = '/Users/nickmac/Desktop/music/'
+var path = !process.env.DEV ? '/home/pi/Desktop/usbstick/' : '/Users/nickmac/Desktop/music/'
 
 var pandora = new Anesidora(process.env.EMAIL, process.env.PASSWORD);
 
