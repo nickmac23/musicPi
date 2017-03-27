@@ -41,11 +41,33 @@ class omx {
        if (err) throw err;
        self.station = stationName
        var songs = playlist.items
-       songs.pop()
+       var adToken = songs.pop().adToken
+       self.requestPandoraAdd(adToken)
        self.playList = self.playList.concat( songs )
        if(!self.player) self.next()
        else self.onRequestFinished()
    });
+  }
+
+  requestPandoraAdd(adToken){
+    var self = this
+    self.pandora.request("ad.getAdMetadata", {
+      "adToken": adToken,
+      "returnAdTrackingTokens": true,
+      "supportAudioAds": true,
+      "includeBannerAd":true
+    }, function(err, ads) {
+      if (err) throw err
+      if (ads.adTrackingTokens && ads.adTrackingTokens.length > 0) {
+        self.pandora.request("ad.registerAd", {
+          "stationId": self.pandoraSelectedStation.stationId,
+          "adTrackingTokens": ads.adTrackingTokens
+        }, function (err, stat) {
+          if (err) throw err
+          console.log('add status?', stat);
+        })
+      }
+    })
   }
 
   requestData(){
@@ -56,14 +78,12 @@ class omx {
     console.log('nowPlaying', song.songName);
     this.nowPlaying = song
     var path = song.additionalAudioUrl
-    if (this.player) {
-      this.player.newSource(path)
+
+    if (this.player) this.player.newSource(path)
+    else {
+      this.player = new Omx(path)
+      this.player.on('close', () => self.events.emit('songEnd') )
     }
-	else {
-    this.player = new Omx(path)
-    var self = this
-    this.player.on('close', () => self.events.emit('songEnd') )
-	}
     this.onRequestFinished()
   }
 
